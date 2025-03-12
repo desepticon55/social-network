@@ -1,0 +1,372 @@
+{
+	"info": {
+		"_postman_id": "fa1ce636-0a78-410b-9cb8-4eea212419bd",
+		"name": "OTUS Highload Architect",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6379230"
+	},
+	"item": [
+		{
+			"name": "Register User",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"first_name\": \"Иван\",\n  \"second_name\": \"Иванов\",\n  \"birthdate\": \"1990-01-01\",\n  \"biography\": \"Программист\",\n  \"city\": \"Москва\",\n  \"password\": \"secret\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/user/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login User",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": \"e4d2e6b0-cde2-42c5-aac3-0b8316f21e58\",\n  \"password\": \"secret\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Profile",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/user/get/e4d2e6b0-cde2-42c5-aac3-0b8316f21e58",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user",
+						"get",
+						"e4d2e6b0-cde2-42c5-aac3-0b8316f21e58"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Users",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/user/search?first_name=Иван&second_name=Иванов",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user",
+						"search"
+					],
+					"query": [
+						{
+							"key": "first_name",
+							"value": "Иван"
+						},
+						{
+							"key": "second_name",
+							"value": "Иванов"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Friend",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/friend/set/e4d2e6b0-cde2-42c5-aac3-0b8316f21e58",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"friend",
+						"set",
+						"e4d2e6b0-cde2-42c5-aac3-0b8316f21e58"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove Friend",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/friend/delete/e4d2e6b0-cde2-42c5-aac3-0b8316f21e58",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"friend",
+						"delete",
+						"e4d2e6b0-cde2-42c5-aac3-0b8316f21e58"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Post",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"text\": \"Lorem ipsum dolor sit amet\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/post/create",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"post",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Post",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": \"1d535fd6-7521-4cb1-aa6d-031be7123c4d\",\n  \"text\": \"Updated text\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/post/update",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"post",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Post",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/post/delete/1d535fd6-7521-4cb1-aa6d-031be7123c4d",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"post",
+						"delete",
+						"1d535fd6-7521-4cb1-aa6d-031be7123c4d"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Post",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/post/get/1d535fd6-7521-4cb1-aa6d-031be7123c4d",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"post",
+						"get",
+						"1d535fd6-7521-4cb1-aa6d-031be7123c4d"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Feed",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/post/feed?offset=0&limit=10",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"post",
+						"feed"
+					],
+					"query": [
+						{
+							"key": "offset",
+							"value": "0"
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send Message",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"text\": \"Привет, как дела?\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/dialog/e4d2e6b0-cde2-42c5-aac3-0b8316f21e58/send",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"dialog",
+						"e4d2e6b0-cde2-42c5-aac3-0b8316f21e58",
+						"send"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Dialog",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/dialog/e4d2e6b0-cde2-42c5-aac3-0b8316f21e58/list",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"dialog",
+						"e4d2e6b0-cde2-42c5-aac3-0b8316f21e58",
+						"list"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080"
+		},
+		{
+			"key": "token",
+			"value": "your_jwt_token_here"
+		}
+	]
+}
