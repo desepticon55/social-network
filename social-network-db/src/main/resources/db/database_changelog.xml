@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <property name="json_type" value="JSONB"/>
+    <property name="prefix" value="ntwrk"/>
+    <property name="schema" value="ntwrk"/>
+
+    <property name="general_tablespace" value="pg_default"/>
+    <property name="index_tablespace" value="pg_default"/>
+
+    <property name="general_tablespace_0" value="ntwrk_ts"/>
+    <property name="index_tablespace_0" value="ntwrk_index_ts"/>
+
+    <include file="changelog/v1_0/changelog-v.1.0-cumulative.xml" relativeToChangelogFile="true"/>
+</databaseChangeLog>

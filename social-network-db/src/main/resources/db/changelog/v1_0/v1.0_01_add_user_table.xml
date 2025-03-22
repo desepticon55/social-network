@@ -1,0 +1,32 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="add_user_table" author="Alexey Bodyak">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="${prefix}_user"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="${prefix}_user" tablespace="${general_tablespace}">
+            <column name="id" type="uuid" remarks="Primary key"/>
+            <column name="password" type="text" remarks="User password">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="varchar(100)" remarks="User first name"/>
+            <column name="second_name" type="varchar(100)" remarks="User second name"/>
+            <column name="birthdate" type="date" remarks="User birthdate"/>
+            <column name="biography" type="text" remarks="User biography"/>
+            <column name="city" type="varchar(50)" remarks="User city"/>
+            <column name="version" type="bigint" defaultValue="0" remarks="User password">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey tableName="${prefix}_user"
+                       columnNames="id"
+                       constraintName="${schema}_user_pk"
+                       tablespace="${general_tablespace}"/>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,77 @@
+server:
+  port: ${PORT_TO_EXPOSE:8080}
+  forward-headers-strategy: framework
+
+spring:
+  application:
+    name: social-network
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/ib?currentSchema=ntwrk
+    username: ${DATASOURCE_USER_MS:ntwrk_ms}
+    password: ${DATASOURCE_PASSWORD_MS:ntwrk_ms}
+    hikari:
+      connectionTimeout: 30000
+      idleTimeout: 60000
+      maxLifetime: 7190000
+      minimumIdle: 2
+      maximumPoolSize: 20
+    tomcat.max-idle: 2
+    tomcat.min-idle: 2
+  jackson:
+    default-property-inclusion: non_null
+    date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat
+    serialization:
+      write_dates_as_timestamps: false
+      write_empty_json_arrays: true
+    deserialization:
+      accept_single_value_as_array: true
+  liquibase:
+    enabled: true
+    parameters:
+      schema: rup_exp
+      text_array_type: text[]
+      json_type: JSONB
+    change-log: classpath:/db/database_changelog.xml
+    default-schema: ntwrk
+    user: ${DATASOURCE_USER:ntwrk}
+    password: ${DATASOURCE_PASSWORD:ntwrk}
+
+management:
+  security:
+    enabled: false
+  health:
+    ldap:
+      enabled: false
+    jms:
+      enabled: false
+  endpoint:
+    startup:
+      enabled: true
+    health:
+      enabled: true
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+  endpoints:
+    web.exposure.include: health,prometheus,startup
+    enabled-by-default: false
+
+
+social-network:
+  jwt:
+    expiration-timeout: 600000
+    secret-key: Mf9Cu5Y3wuZCBPTy3j3w8Xs43jfpCmgAB9FDq6GtZJg=
+
+
+logging:
+  level:
+    dev.bd.work.socialnetwork: DEBUG
+    org.springframework.security: DEBUG
