@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -36,5 +38,11 @@ public class UserResource {
     @GetMapping("/get/{id}")
     public UserDto findUserById(@PathVariable("id") UUID id) {
         return readHandler.findUserById(id);
+    }
+
+    @GetMapping("/search")
+    public List<UserDto> findAllUsersByFirstAndSecondName(@RequestParam("first_name") String firstName,
+                                                          @RequestParam("second_name") String secondName) {
+        return readHandler.findAllUsersByName(firstName, secondName);
     }
 }
