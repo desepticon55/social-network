@@ -8,5 +8,7 @@
     <include file="v1.0_01_add_user_table.xml" relativeToChangelogFile="true"/>
     <include file="v1.0_02_fill_user_table.xml" relativeToChangelogFile="true"/>
     <include file="v1.0_03_add_user_name_index_table.xml" relativeToChangelogFile="true"/>
+    <include file="v1.0_04_add_post_table.xml" relativeToChangelogFile="true"/>
+    <include file="v1.0_05_add_friend_table.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

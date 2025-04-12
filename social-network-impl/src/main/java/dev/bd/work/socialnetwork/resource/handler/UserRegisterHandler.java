@@ -1,24 +1,24 @@
 package dev.bd.work.socialnetwork.resource.handler;
 
-import dev.bd.work.socialnetwork.dto.RegisterUserRequest;
-import dev.bd.work.socialnetwork.dto.RegisterUserResponse;
-import dev.bd.work.socialnetwork.mapper.RegisterUserMapper;
+import dev.bd.work.socialnetwork.dto.UserRegisterRequest;
+import dev.bd.work.socialnetwork.dto.UserRegisterResponse;
+import dev.bd.work.socialnetwork.mapper.UserRegisterMapper;
 import dev.bd.work.socialnetwork.model.User;
 import dev.bd.work.socialnetwork.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 /**
- * Handler to register event.
+ * Handler to register user.
  *
  * @author Alexey Bodyak
  */
 @Component
 @RequiredArgsConstructor
-public class RegisterHandler {
+public class UserRegisterHandler {
 
     private final UserRepository userRepository;
-    private final RegisterUserMapper registerUserMapper;
+    private final UserRegisterMapper registerUserMapper;
 
     /**
      * Register new user.
@@ -26,8 +26,8 @@ public class RegisterHandler {
      * @param request request
      * @return response
      */
-    public RegisterUserResponse registerUser(RegisterUserRequest request) {
+    public UserRegisterResponse registerUser(UserRegisterRequest request) {
         User user = userRepository.save(registerUserMapper.toDomainModel(request));
-        return RegisterUserResponse.of(user.getId());
+        return UserRegisterResponse.of(user.getId());
     }
 }

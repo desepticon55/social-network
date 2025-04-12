@@ -12,10 +12,10 @@ import java.util.UUID;
  */
 @Data
 @Accessors(chain = true)
-public class RegisterUserResponse {
+public class UserRegisterResponse {
     private UUID userId;
 
-    public static RegisterUserResponse of(UUID userId) {
-        return new RegisterUserResponse().setUserId(userId);
+    public static UserRegisterResponse of(UUID userId) {
+        return new UserRegisterResponse().setUserId(userId);
     }
 }

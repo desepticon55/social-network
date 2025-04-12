@@ -1,6 +1,6 @@
 package dev.bd.work.socialnetwork.mapper;
 
-import dev.bd.work.socialnetwork.dto.RegisterUserRequest;
+import dev.bd.work.socialnetwork.dto.UserRegisterRequest;
 import dev.bd.work.socialnetwork.model.User;
 import lombok.Setter;
 import org.mapstruct.AfterMapping;
@@ -11,12 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
- * Mapper from {@link RegisterUserRequest} to {@link User}.
+ * Mapper from {@link UserRegisterRequest} to {@link User}.
  *
  * @author Alexey Bodyak
  */
 @Mapper
-public abstract class RegisterUserMapper implements AbstractDomainMapper<User, RegisterUserRequest> {
+public abstract class UserRegisterMapper implements AbstractDomainMapper<User, UserRegisterRequest> {
 
     @Setter
     @Autowired
@@ -26,10 +26,10 @@ public abstract class RegisterUserMapper implements AbstractDomainMapper<User, R
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "version", ignore = true)
     @Mapping(target = "password", ignore = true)
-    public abstract User toDomainModel(RegisterUserRequest dto);
+    public abstract User toDomainModel(UserRegisterRequest dto);
 
     @AfterMapping
-    protected void afterMapping(RegisterUserRequest dto, @MappingTarget User user) {
+    protected void afterMapping(UserRegisterRequest dto, @MappingTarget User user) {
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
     }
 }

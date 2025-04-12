@@ -1,0 +1,22 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="add_friend_table" author="Alexey Bodyak">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="${prefix}_friend"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="${prefix}_friend" tablespace="${general_tablespace}">
+            <column name="user_id" type="uuid" remarks="User id"/>
+            <column name="friend_id" type="uuid" remarks="Friend id"/>
+        </createTable>
+
+        <addPrimaryKey tableName="${prefix}_friend"
+                       columnNames="user_id,friend_id"
+                       constraintName="${schema}_friend_pk"
+                       tablespace="${general_tablespace}"/>
+    </changeSet>
+</databaseChangeLog>

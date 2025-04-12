@@ -1,0 +1,31 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="add_post_table" author="Alexey Bodyak">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="${prefix}_post"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="${prefix}_post" tablespace="${general_tablespace}">
+            <column name="id" type="uuid" remarks="Primary key"/>
+            <column name="author_id" type="uuid" remarks="Author id"/>
+            <column name="post_text" type="text" remarks="Post text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp(6) with timezone" remarks="Datetime of create post">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="bigint" defaultValue="0" remarks="Version column for optimistic locking">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey tableName="${prefix}_post"
+                       columnNames="id"
+                       constraintName="${schema}_post_pk"
+                       tablespace="${general_tablespace}"/>
+    </changeSet>
+</databaseChangeLog>
