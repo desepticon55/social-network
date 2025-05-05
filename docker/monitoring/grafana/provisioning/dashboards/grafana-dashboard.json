@@ -1,0 +1,101 @@
+{
+  "title": "PostgreSQL Master-Slave Replication",
+  "description": "Comprehensive monitoring for PostgreSQL replication",
+  "tags": ["postgresql", "replication"],
+  "timezone": "browser",
+  "editable": true,
+  "uid": "postgres-replication",
+  "panels": [
+    {
+      "title": "Replication Status",
+      "type": "stat",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "pg_replication_is_replica{instance=~\"$instance\"}",
+          "legendFormat": "{{alias}} - is replica"
+        }
+      ],
+      "gridPos": {"x": 0, "y": 0, "w": 8, "h": 4},
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}
+      }
+    },
+    {
+      "title": "Replication Lag (Bytes)",
+      "type": "graph",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "pg_replication_lag_bytes{instance=~\"$instance\"}",
+          "legendFormat": "{{alias}}"
+        }
+      ],
+      "gridPos": {"x": 0, "y": 4, "w": 12, "h": 8},
+      "options": {
+        "legend": {"displayMode": "list", "placement": "bottom"}
+      }
+    },
+    {
+      "title": "Active Connections",
+      "type": "graph",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "pg_stat_activity_count{instance=~\"$instance\"}",
+          "legendFormat": "{{alias}}"
+        }
+      ],
+      "gridPos": {"x": 12, "y": 0, "w": 12, "h": 6}
+    },
+    {
+      "title": "Database Size",
+      "type": "graph",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "pg_database_size_bytes{instance=~\"$instance\"}",
+          "legendFormat": "{{alias}} - {{datname}}"
+        }
+      ],
+      "gridPos": {"x": 0, "y": 12, "w": 12, "h": 6}
+    },
+    {
+      "title": "Write/Read Operations",
+      "type": "graph",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "rate(pg_stat_database_tup_inserted{instance=~\"$instance\"}[5m])",
+          "legendFormat": "{{alias}} - writes"
+        },
+        {
+          "expr": "rate(pg_stat_database_tup_fetched{instance=~\"$instance\"}[5m])",
+          "legendFormat": "{{alias}} - reads"
+        }
+      ],
+      "gridPos": {"x": 12, "y": 6, "w": 12, "h": 6}
+    }
+  ],
+  "templating": {
+    "list": [
+      {
+        "name": "instance",
+        "label": "Instance",
+        "type": "query",
+        "datasource": "Prometheus",
+        "query": "label_values(pg_replication_is_replica, instance)",
+        "multi": true,
+        "includeAll": true
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  }
+}
