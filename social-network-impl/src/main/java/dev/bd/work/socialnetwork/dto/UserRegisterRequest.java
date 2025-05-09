@@ -12,7 +12,7 @@ import java.time.LocalDate;
  */
 @Data
 @Accessors(chain = true)
-public class RegisterUserRequest {
+public class UserRegisterRequest {
     private String firstName;
     private String secondName;
     private LocalDate birthdate;

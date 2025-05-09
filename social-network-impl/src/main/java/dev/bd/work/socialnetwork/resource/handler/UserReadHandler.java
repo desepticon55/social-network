@@ -7,6 +7,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,6 +30,7 @@ public class UserReadHandler {
      * @param id user identifier
      * @return user representation
      */
+    @Transactional(readOnly = true)
     public UserDto findUserById(@NonNull UUID id) {
         return userDtoMapper.toDto(userService.findUserById(id));
     }
@@ -40,6 +42,7 @@ public class UserReadHandler {
      * @param secondName second name
      * @return list of user representation
      */
+    @Transactional(readOnly = true)
     public List<UserDto> findAllUsersByName(String firstName, String secondName) {
         if (StringUtils.isBlank(firstName) || StringUtils.isBlank(secondName)) {
             throw new IllegalArgumentException("User filter fields: firstName, secondName cannot be empty");

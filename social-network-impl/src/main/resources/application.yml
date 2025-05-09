@@ -3,23 +3,38 @@ server:
   forward-headers-strategy: framework
 
 spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
   application:
     name: social-network
   main:
     allow-bean-definition-overriding: true
   datasource:
-    driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/ib?currentSchema=ntwrk
-    username: ${DATASOURCE_USER_MS:ntwrk_ms}
-    password: ${DATASOURCE_PASSWORD_MS:ntwrk_ms}
-    hikari:
-      connectionTimeout: 30000
-      idleTimeout: 60000
-      maxLifetime: 7190000
-      minimumIdle: 2
-      maximumPoolSize: 20
-    tomcat.max-idle: 2
-    tomcat.min-idle: 2
+    master:
+      driverClassName: org.postgresql.Driver
+      url: jdbc:postgresql://localhost:5432/ib?currentSchema=ntwrk
+      username: ${DATASOURCE_USER_MS:ntwrk_ms}
+      password: ${DATASOURCE_PASSWORD_MS:ntwrk_ms}
+      hikari:
+        pool-name: Master-Hikari-Pool
+        maximum-pool-size: 10
+        connection-timeout: 30000
+        idle-timeout: 600000
+        max-lifetime: 1800000
+    slave:
+      driverClassName: org.postgresql.Driver
+      url: jdbc:postgresql://localhost:5433/ib?currentSchema=ntwrk
+      username: ${DATASOURCE_USER_MS:ntwrk_ms}
+      password: ${DATASOURCE_PASSWORD_MS:ntwrk_ms}
+      hikari:
+        pool-name: Slave-Hikari-Pool
+        maximumPoolSize: 15
+        connection-timeout: 30000
+        idleTimeout: 600000
+        maxLifetime: 1800000
+        read-only: true  # Оптимизация для read-only соединений
   jackson:
     default-property-inclusion: non_null
     date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat
@@ -76,3 +91,6 @@ logging:
     dev.bd.work.socialnetwork: DEBUG
     org.springframework.security: DEBUG
     org.springframework.jdbc.core.JdbcTemplate: DEBUG
+    com:
+      zaxxer:
+        hikari: INFO

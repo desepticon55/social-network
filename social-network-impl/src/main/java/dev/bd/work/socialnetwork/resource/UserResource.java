@@ -1,9 +1,9 @@
 package dev.bd.work.socialnetwork.resource;
 
-import dev.bd.work.socialnetwork.dto.RegisterUserRequest;
-import dev.bd.work.socialnetwork.dto.RegisterUserResponse;
+import dev.bd.work.socialnetwork.dto.UserRegisterRequest;
+import dev.bd.work.socialnetwork.dto.UserRegisterResponse;
 import dev.bd.work.socialnetwork.dto.UserDto;
-import dev.bd.work.socialnetwork.resource.handler.RegisterHandler;
+import dev.bd.work.socialnetwork.resource.handler.UserRegisterHandler;
 import dev.bd.work.socialnetwork.resource.handler.UserReadHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,11 +27,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserResource {
 
-    private final RegisterHandler registerHandler;
+    private final UserRegisterHandler registerHandler;
     private final UserReadHandler readHandler;
 
     @PostMapping("/register")
-    public RegisterUserResponse registerUser(@RequestBody RegisterUserRequest request) {
+    public UserRegisterResponse registerUser(@RequestBody UserRegisterRequest request) {
         return registerHandler.registerUser(request);
     }
 

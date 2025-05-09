@@ -9,31 +9,148 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/ib?currentSchema=ntwrk
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db-master:5432/ib?currentSchema=ntwrk
       SPRING_DATASOURCE_USERNAME: ntwrk_ms
       SPRING_DATASOURCE_PASSWORD: ntwrk_ms
     depends_on:
-      - db
+      - db-master
     networks:
       - social-network-net
 
-  db:
+  db-master:
     image: postgres:15
-    container_name: social-network-db
+    container_name: social-network-db-master
     environment:
       POSTGRES_DB: ib
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      POSTGRES_REPLICATION_USER: replicator
+      POSTGRES_REPLICATION_PASSWORD: replicationpass
     ports:
       - "5432:5432"
     volumes:
-      - ./postgres/init.sh:/docker-entrypoint-initdb.d/initdb.sh
-      - postgres_data:/var/lib/postgresql/data
+      - ./postgres/master-init.sh:/docker-entrypoint-initdb.d/initdb.sh
+      - postgres_master_data:/var/lib/postgresql/data
+    networks:
+      - social-network-net
+
+  db-slave1:
+    image: postgres:15
+    container_name: social-network-db-slave1
+    environment:
+      POSTGRES_DB: ib
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      REPLICA_NUMBER: "1"
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./postgres/slave-init.sh:/docker-entrypoint-initdb.d/initdb.sh
+      - postgres_slave1_data:/var/lib/postgresql/data
+    depends_on:
+      - db-master
+    networks:
+      - social-network-net
+
+  db-slave2:
+    image: postgres:15
+    container_name: social-network-db-slave2
+    environment:
+      POSTGRES_DB: ib
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      REPLICA_NUMBER: "2"
+    ports:
+      - "5434:5432"
+    volumes:
+      - ./postgres/slave-init.sh:/docker-entrypoint-initdb.d/initdb.sh
+      - postgres_slave2_data:/var/lib/postgresql/data
+    depends_on:
+      - db-master
+    networks:
+      - social-network-net
+
+  postgres-exporter-master:
+    image: prometheuscommunity/postgres-exporter
+    container_name: postgres-exporter-master
+    environment:
+      DATA_SOURCE_NAME: "postgresql://postgres:postgres@db-master:5432/ib?sslmode=disable"
+      PG_EXPORTER_EXTEND_QUERY_PATH: /etc/postgres_exporter/queries.yaml
+    ports:
+      - "9187:9187"
+    volumes:
+      - ./postgres/postgres_exporter/queries.yaml:/etc/postgres_exporter/queries.yaml
+    depends_on:
+      - db-master
+    networks:
+      - social-network-net
+
+  postgres-exporter-slave1:
+    image: prometheuscommunity/postgres-exporter
+    container_name: postgres-exporter-slave1
+    environment:
+      DATA_SOURCE_NAME: "postgresql://postgres:postgres@db-slave1:5432/ib?sslmode=disable"
+    ports:
+      - "9188:9187"
+    depends_on:
+      - db-slave1
+    networks:
+      - social-network-net
+
+  postgres-exporter-slave2:
+    image: prometheuscommunity/postgres-exporter
+    container_name: postgres-exporter-slave2
+    environment:
+      DATA_SOURCE_NAME: "postgresql://postgres:postgres@db-slave2:5432/ib?sslmode=disable"
+    ports:
+      - "9189:9187"
+    depends_on:
+      - db-slave2
+    networks:
+      - social-network-net
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--web.enable-lifecycle'
+    depends_on:
+      - postgres-exporter-master
+      - postgres-exporter-slave1
+      - postgres-exporter-slave2
+    networks:
+      - social-network-net
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    user: "472:472"
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      GF_PATHS_PROVISIONING: /etc/grafana/provisioning
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    depends_on:
+      prometheus:
+        condition: service_started
     networks:
       - social-network-net
 
 volumes:
-  postgres_data:
+  postgres_master_data:
+  postgres_slave1_data:
+  postgres_slave2_data:
+  grafana_data:
 
 networks:
   social-network-net:
