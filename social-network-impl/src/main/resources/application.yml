@@ -35,25 +35,23 @@ spring:
         idleTimeout: 600000
         maxLifetime: 1800000
         read-only: true  # Оптимизация для read-only соединений
-  jackson:
-    default-property-inclusion: non_null
-    date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat
-    serialization:
-      write_dates_as_timestamps: false
-      write_empty_json_arrays: true
-    deserialization:
-      accept_single_value_as_array: true
   liquibase:
-    enabled: true
+    enabled: false
     parameters:
-      schema: rup_exp
+      schema: ntwrk
       text_array_type: text[]
       json_type: JSONB
     change-log: classpath:/db/database_changelog.xml
     default-schema: ntwrk
     user: ${DATASOURCE_USER:ntwrk}
     password: ${DATASOURCE_PASSWORD:ntwrk}
-
+  data:
+    redis:
+      database: 0
+      sentinel:
+        master: mymaster
+        nodes: localhost:26379
+      client-type: jedis
 management:
   security:
     enabled: false
@@ -94,3 +92,5 @@ logging:
     com:
       zaxxer:
         hikari: INFO
+
+debug: true

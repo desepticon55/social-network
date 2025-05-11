@@ -146,6 +146,43 @@ services:
     networks:
       - social-network-net
 
+  redis-master:
+    image: 'bitnami/redis:latest'
+    environment:
+      - REDIS_REPLICATION_MODE=master
+      - ALLOW_EMPTY_PASSWORD=true
+    ports:
+      - "6379:6379"
+
+  redis-slave:
+    image: 'bitnami/redis:latest'
+    environment:
+      - REDIS_REPLICATION_MODE=slave
+      - REDIS_MASTER_HOST=redis-master
+      - ALLOW_EMPTY_PASSWORD=true
+    ports:
+      - "6378:6379"
+    depends_on:
+      - redis-master
+
+  redis-sentinel:
+    image: 'bitnami/redis-sentinel:latest'
+    environment:
+      - REDIS_MASTER_SET=mymaster
+      - REDIS_MASTER_HOST=127.0.0.1
+      - REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=10000
+      - REDIS_SENTINEL_QUORUM=1
+    depends_on:
+      - redis-master
+      - redis-slave
+    ports:
+      - "26379:26379"
+
+  redis-insight:
+    image: redis/redisinsight:latest
+    ports:
+      - "5540:5540"
+
 volumes:
   postgres_master_data:
   postgres_slave1_data:

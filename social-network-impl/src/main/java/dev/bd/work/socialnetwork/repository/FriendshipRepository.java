@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,6 +21,8 @@ public interface FriendshipRepository extends CrudRepository<Friendship, UUID> {
     @Query("select * from ntwrk_friend f where f.user_id = :userId and f.friend_id = :friendId")
     Optional<Friendship> findByKey(@Param("userId") UUID userId, @Param("friendId") UUID friendId);
 
+    @Query("select * from ntwrk_friend f where f.user_id = :userId")
+    List<Friendship> findAllFriends(@Param("userId") UUID userId);
 
     @Modifying
     @Transactional
