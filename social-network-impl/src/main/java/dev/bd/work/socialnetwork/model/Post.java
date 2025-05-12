@@ -21,6 +21,7 @@ public class Post {
 
     public Post() {
         this.id = UUID.randomUUID();
+        this.createdAt = Instant.now();
     }
 
     @Id
