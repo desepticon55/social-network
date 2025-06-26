@@ -1,5 +1,5 @@
 server:
-  port: ${PORT_TO_EXPOSE:8080}
+  port: ${PORT_TO_EXPOSE:8081}
   forward-headers-strategy: framework
 
 spring:
@@ -14,9 +14,9 @@ spring:
   datasource:
     master:
       driverClassName: org.postgresql.Driver
-      url: jdbc:postgresql://localhost:5432/ib?currentSchema=ntwrk
-      username: ${DATASOURCE_USER_MS:ntwrk_ms}
-      password: ${DATASOURCE_PASSWORD_MS:ntwrk_ms}
+      url: ${MASTER_DATASOURCE_URL:jdbc:postgresql://localhost:5432/ib?currentSchema=ntwrk}
+      username: ${MASTER_DATASOURCE_USERNAME:ntwrk_ms}
+      password: ${MASTER_DATASOURCE_PASSWORD:ntwrk_ms}
       hikari:
         pool-name: Master-Hikari-Pool
         maximum-pool-size: 10
@@ -25,9 +25,9 @@ spring:
         max-lifetime: 1800000
     slave:
       driverClassName: org.postgresql.Driver
-      url: jdbc:postgresql://localhost:5433/ib?currentSchema=ntwrk
-      username: ${DATASOURCE_USER_MS:ntwrk_ms}
-      password: ${DATASOURCE_PASSWORD_MS:ntwrk_ms}
+      url: ${SLAVE_DATASOURCE_URL:jdbc:postgresql://localhost:6543/ib?currentSchema=ntwrk}
+      username: ${SLAVE_DATASOURCE_USERNAME:ntwrk_ms}
+      password: ${SLAVE_DATASOURCE_PASSWORD:ntwrk_ms}
       hikari:
         pool-name: Slave-Hikari-Pool
         maximumPoolSize: 15
