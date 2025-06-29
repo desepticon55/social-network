@@ -1,43 +1,43 @@
 version: '3.8'
 
 services:
-  app1:
-    build:
-      context: ..
-      dockerfile: docker/Dockerfile
-    container_name: social-network-app1
-    ports:
-      - "8081:8080"
-    environment:
-      MASTER_DATASOURCE_URL: jdbc:postgresql://db-master:5432/ib?currentSchema=ntwrk
-      MASTER_DATASOURCE_USERNAME: ntwrk_ms
-      MASTER_DATASOURCE_PASSWORD: ntwrk_ms
-      SLAVE_DATASOURCE_URL: jdbc:postgresql://haproxy-pg:6543/ib?currentSchema=ntwrk
-      SLAVE_DATASOURCE_USERNAME: ntwrk_ms
-      SLAVE_DATASOURCE_PASSWORD: ntwrk_ms
-    depends_on:
-      - haproxy-pg
-    networks:
-      - social-network-net
-
-  app2:
-    build:
-      context: ..
-      dockerfile: docker/Dockerfile
-    container_name: social-network-app2
-    ports:
-      - "8082:8080"
-    environment:
-      MASTER_DATASOURCE_URL: jdbc:postgresql://db-master:5432/ib?currentSchema=ntwrk
-      MASTER_DATASOURCE_USERNAME: ntwrk_ms
-      MASTER_DATASOURCE_PASSWORD: ntwrk_ms
-      SLAVE_DATASOURCE_URL: jdbc:postgresql://haproxy-pg:6543/ib?currentSchema=ntwrk
-      SLAVE_DATASOURCE_USERNAME: ntwrk_ms
-      SLAVE_DATASOURCE_PASSWORD: ntwrk_ms
-    depends_on:
-      - haproxy-pg
-    networks:
-      - social-network-net
+#  app1:
+#    build:
+#      context: ..
+#      dockerfile: docker/Dockerfile
+#    container_name: social-network-app1
+#    ports:
+#      - "8081:8080"
+#    environment:
+#      MASTER_DATASOURCE_URL: jdbc:postgresql://db-master:5432/ib?currentSchema=ntwrk
+#      MASTER_DATASOURCE_USERNAME: ntwrk_ms
+#      MASTER_DATASOURCE_PASSWORD: ntwrk_ms
+#      SLAVE_DATASOURCE_URL: jdbc:postgresql://haproxy-pg:6543/ib?currentSchema=ntwrk
+#      SLAVE_DATASOURCE_USERNAME: ntwrk_ms
+#      SLAVE_DATASOURCE_PASSWORD: ntwrk_ms
+#    depends_on:
+#      - haproxy-pg
+#    networks:
+#      - social-network-net
+#
+#  app2:
+#    build:
+#      context: ..
+#      dockerfile: docker/Dockerfile
+#    container_name: social-network-app2
+#    ports:
+#      - "8082:8080"
+#    environment:
+#      MASTER_DATASOURCE_URL: jdbc:postgresql://db-master:5432/ib?currentSchema=ntwrk
+#      MASTER_DATASOURCE_USERNAME: ntwrk_ms
+#      MASTER_DATASOURCE_PASSWORD: ntwrk_ms
+#      SLAVE_DATASOURCE_URL: jdbc:postgresql://haproxy-pg:6543/ib?currentSchema=ntwrk
+#      SLAVE_DATASOURCE_USERNAME: ntwrk_ms
+#      SLAVE_DATASOURCE_PASSWORD: ntwrk_ms
+#    depends_on:
+#      - haproxy-pg
+#    networks:
+#      - social-network-net
 
   db-master:
     image: postgres:15
@@ -115,7 +115,6 @@ services:
     networks:
       - social-network-net
 
-  # Redis setup (unchanged)
   redis-master:
     image: 'bitnami/redis:latest'
     environment:
@@ -161,7 +160,6 @@ services:
     networks:
       - social-network-net
 
-  # Monitoring (unchanged)
   postgres-exporter-master:
     image: prometheuscommunity/postgres-exporter
     container_name: postgres-exporter-master
