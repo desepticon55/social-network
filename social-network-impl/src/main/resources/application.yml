@@ -80,9 +80,12 @@ management:
 
 social-network:
   jwt:
-    expiration-timeout: 600000
+    expiration-timeout: 1200000
     secret-key: Mf9Cu5Y3wuZCBPTy3j3w8Xs43jfpCmgAB9FDq6GtZJg=
 
+
+db:
+  mode: redis
 
 logging:
   level:
